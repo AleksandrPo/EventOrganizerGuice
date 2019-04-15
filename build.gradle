@@ -1,0 +1,26 @@
+plugins {
+//    id 'java'
+    id 'war'
+}
+
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'com.google.inject', name: 'guice', version: '3.0'
+    compile group: 'com.google.inject.extensions', name: 'guice-servlet', version: '3.0'
+    compile group: 'com.google.inject.extensions', name: 'guice-persist', version: '3.0'
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.2.Final'
+    compile group: 'com.sun.jersey.contribs', name: 'jersey-guice', version: '1.19.4'//rest service
+    compile group: 'com.sun.jersey', name: 'jersey-json', version: '1.19.4'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
+
+
+    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
