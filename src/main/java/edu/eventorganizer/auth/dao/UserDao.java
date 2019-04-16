@@ -15,12 +15,12 @@ public class UserDao {
     }
 
     public User findByUsername(String username) {
-        String query = "FROM event_organizer WHERE username=:" + username;
+        String query = "SELECT username FROM users WHERE username=:" + username;
         return (User) entityManager.createQuery(query);
     }
 
     public Optional findByEmail(String email) {
-        String query = "FROM event_organizer WHERE email=:" + email;
+        String query = "SELECT email FROM users WHERE email=:" + email;
         return Optional.of((User) entityManager.createQuery(query));
     }
 

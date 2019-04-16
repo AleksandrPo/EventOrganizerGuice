@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 
 @Path("/")
-public class UserController {
+public class LoginController {
 
     @Inject
     UserService userService;
