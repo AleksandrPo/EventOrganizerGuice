@@ -37,11 +37,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User user) {
+    public boolean saveUser(User user) {
         User u = userDao.findByUsername(user.getUsername());
         if(u == null) {
             userDao.save(user);
         }
+        return u != null;
     }
 
     @Override

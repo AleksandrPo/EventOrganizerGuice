@@ -21,14 +21,14 @@ public class User {
     @Column(name = "lastName")
     private String lastName;
     @Column(name = "phone")
-    private short phone;
+    private int phone;
     @Column(name = "u_status")
     private String status;//TODO: Statuses: ACTIVE, FROZEN, DELETED
     @Column(name = "permission")
     private String permission;//TODO: Permissions: USER, ADMIN
 
     public User() {}
-    private User(String username, String password, String email, String firstName, String lastName, short phone, String status, String permission) {
+    private User(String username, String password, String email, String firstName, String lastName, int phone, String status, String permission) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -67,7 +67,7 @@ public class User {
         return lastName;
     }
 
-    public short getPhone() {
+    public int getPhone() {
         return phone;
     }
 
@@ -86,7 +86,7 @@ public class User {
         private String email;
         private String firstName;
         private String lastName;
-        private short phone;
+        private int phone;
         private String status;
         private String permission;
 
@@ -110,7 +110,7 @@ public class User {
             this.email = email;
             return this;
         }
-        public Builder setPhone(short phone) {
+        public Builder setPhone(int phone) {
             this.phone = phone;
             return this;
         }

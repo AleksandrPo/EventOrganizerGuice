@@ -11,6 +11,6 @@ public interface UserService {
     Optional getUserByUsername(String username);
     Optional getUserByEmail(String email);
     Boolean login(String username, String password);
-    void saveUser(User user);
+    boolean saveUser(User user);
     void updateUser(User user);
 }

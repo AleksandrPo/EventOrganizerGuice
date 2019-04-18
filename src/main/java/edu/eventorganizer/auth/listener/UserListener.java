@@ -9,6 +9,8 @@ import com.google.inject.servlet.GuiceServletContextListener;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import edu.eventorganizer.auth.controller.LoginController;
+import edu.eventorganizer.auth.controller.MainPageController;
+import edu.eventorganizer.auth.controller.RegistrationController;
 
 import javax.servlet.annotation.WebListener;
 
@@ -20,6 +22,8 @@ public class UserListener extends GuiceServletContextListener {
             @Override
             protected void configureServlets() {
                 bind(LoginController.class);
+                bind(RegistrationController.class);
+                bind(MainPageController.class);
                 serve("/*").with(GuiceContainer.class);
             }
         }, new JpaPersistModule("db_manager"));
