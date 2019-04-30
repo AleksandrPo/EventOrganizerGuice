@@ -11,6 +11,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 @Path("/")
 public class LoginController {
@@ -23,21 +24,17 @@ public class LoginController {
         return new Viewable("/login.html");
     }
 
-//    @GET
-//    @Produces(MediaType.TEXT_HTML)
-//    public Response redirectToLoginPage(@Context HttpServletRequest request, @Context HttpServletResponse response) throws Exception {
-//        String contextPath = request.getContextPath();
-//        response.sendRedirect(contextPath + "login.html");
-//        return Response.status(Response.Status.OK).build();
-//    }
+    @POST
+    public Viewable toLPage() {
+        return new Viewable("/login.html");
+    }
 
     @POST
     @Path("login")
-    public Response login(@FormParam("username") String username, @FormParam("password") String password) {
-//        Boolean isValid = userService.login(username, password);
-        Boolean isValid = username.equals("user1") && password.equals("pass");
-        return isValid ? Response.status(Response.Status.OK).build()
-                : Response.status(Response.Status.BAD_REQUEST).build();
+    @Produces(MediaType.TEXT_HTML)
+    public Response login(@FormParam("username") String username, @FormParam("password") String password) throws URISyntaxException {
+        return userService.login(username, password) ? Response.seeOther(new URI("http://localhost:8080/main")).build()
+                : Response.seeOther(new URI("http://localhost:8080/")).build();
 
     }
 }

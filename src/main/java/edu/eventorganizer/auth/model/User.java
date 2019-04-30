@@ -1,13 +1,19 @@
 package edu.eventorganizer.auth.model;
 
+import edu.eventorganizer.application.model.Events;
+import edu.eventorganizer.application.model.Vehicle;
+import lombok.Getter;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
+@Getter
 @Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "username")
@@ -23,12 +29,18 @@ public class User {
     @Column(name = "phone")
     private int phone;
     @Column(name = "u_status")
-    private String status;//TODO: Statuses: ACTIVE, FROZEN, DELETED
-    @Column(name = "permission")
-    private String permission;//TODO: Permissions: USER, ADMIN
+    private String status;
+    @Column(name = "u_role")
+    private String role;
+
+    @OneToMany(mappedBy = "user_id")
+    private Set<Vehicle> vehicle;
+    @OneToMany(mappedBy = "event_id")
+    private Set<Events> events;
+
 
     public User() {}
-    private User(String username, String password, String email, String firstName, String lastName, int phone, String status, String permission) {
+    private User(String username, String password, String email, String firstName, String lastName, int phone, String status, String role) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -36,47 +48,19 @@ public class User {
         this.lastName = lastName;
         this.phone = phone;
         this.status = status;
-        this.permission = permission;
-    }
-
-    public long getId() {
-        return id;
+        this.role = role;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public void setStatus (String status) {
+        this.status = status;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public int getPhone() {
-        return phone;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public String getPermission() {
-        return permission;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public static class Builder {
@@ -88,7 +72,7 @@ public class User {
         private String lastName;
         private int phone;
         private String status;
-        private String permission;
+        private String role;
 
         public Builder setUsername(String username) {
             this.username = username;
@@ -118,12 +102,14 @@ public class User {
             this.status = status;
             return this;
         }
-        public Builder setPermission(String permission) {
-            this.permission = permission;
+        public Builder setRole(String role) {
+            this.role = role;
             return this;
         }
         public User build() {
-            return new User(username, password, email, firstName, lastName, phone, status, permission);
+            return new User(username, password, email, firstName, lastName, phone,
+                    status == null ? "ACTIVE" : status,
+                    role == null ? "USER" : role);
         }
     }
 }
