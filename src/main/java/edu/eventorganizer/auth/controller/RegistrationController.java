@@ -4,6 +4,9 @@ import com.google.inject.Inject;
 import com.sun.jersey.api.view.Viewable;
 import edu.eventorganizer.auth.model.User;
 import edu.eventorganizer.auth.service.UserService;
+import org.apache.shiro.crypto.RandomNumberGenerator;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -36,15 +39,24 @@ public class RegistrationController {
         if(password.equals(re_password)) {
             User user = new User.Builder()
                     .setUsername(username)
-                    .setPassword(password)
                     .setEmail(email)
                     .setFirstName(firstName)
                     .setLastName(lastName)
                     .setPhone(phone)
                     .build();
+            encodePassword(user, password);
             return userService.saveUser(user) ? Response.seeOther(new URI("http://localhost:8080")).build()
                     : Response.seeOther(new URI("http://localhost:8080/reg")).build();
         }
         return Response.seeOther(new URI("http://localhost:8080/reg")).build();
+    }
+
+    private void encodePassword(User user, String passwordTxt) {
+        RandomNumberGenerator rng = new SecureRandomNumberGenerator();
+        Object salt = rng.nextBytes();
+
+        String hashedPasswordBase64 = new Sha256Hash(passwordTxt, salt, 1024).toBase64();
+        user.setPassword(hashedPasswordBase64);
+        user.setSalt(salt.toString());
     }
 }

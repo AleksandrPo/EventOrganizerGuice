@@ -6,8 +6,10 @@ import edu.eventorganizer.application.model.Vehicle;
 import edu.eventorganizer.auth.model.User;
 
 import javax.persistence.EntityManager;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class UserDao {
     @Inject
@@ -30,7 +32,16 @@ public class UserDao {
                 "select u from User u where u.email like :email")
                 .setParameter("email", email)
                 .getResultList();
-        return list.isEmpty() ? null : (Optional) list.get(0);
+        return list.isEmpty() ? Optional.empty() : (Optional) list.get(0);
+    }
+
+    public String findRole(String username) {
+        String sql = "select role from users u where u.username like :username";
+        List list = entityManager.createQuery(
+                "select role from User u where u.username like :username")
+                .setParameter("username", username)
+                .getResultList();
+        return list.isEmpty() ? null : list.get(0).toString();
     }
 
     public Optional getUserInfo() {

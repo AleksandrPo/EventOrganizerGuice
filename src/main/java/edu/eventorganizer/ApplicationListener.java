@@ -47,7 +47,7 @@ public class ApplicationListener extends GuiceServletContextListener {
                 serve("/*").with(GuiceContainer.class);
             }
         }, new JpaPersistModule("db_manager")
-                , new TestShiroModule(servletContext)
+                ,new TestShiroModule(servletContext)
                 ,ShiroWebModule.guiceFilterModule());
         injector.getInstance(JpaInitializer.class);
         return injector;

@@ -13,6 +13,7 @@ public interface UserService {
     Optional getUserByUsername(String username);
     Optional getUserByEmail(String email);
     boolean login(String username, String password);
+    void logout();
     boolean saveUser(User user);
     void updateUser(User user);
     List<Vehicle> getVehicleByNumber(User user);

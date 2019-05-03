@@ -20,6 +20,8 @@ public class User {
     private String username;
     @Column(name = "password")
     private String password;
+    @Column(name = "salt")
+    private String salt;
     @Column(name = "email")
     private String email;
     @Column(name = "firstName")
@@ -28,19 +30,20 @@ public class User {
     private String lastName;
     @Column(name = "phone")
     private int phone;
-    @Column(name = "u_status")
-    private String status;
-    @Column(name = "u_role")
-    private String role;
 
     @OneToMany(mappedBy = "user_id")
     private Set<Vehicle> vehicle;
     @OneToMany(mappedBy = "event_id")
     private Set<Events> events;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+    @Enumerated(EnumType.STRING)
+    private Roles role;
+
 
     public User() {}
-    private User(String username, String password, String email, String firstName, String lastName, int phone, String status, String role) {
+    private User(String username, String password, String email, String firstName, String lastName, int phone, Status status, Roles role) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -55,12 +58,20 @@ public class User {
         this.id = id;
     }
 
-    public void setStatus (String status) {
+    public void setStatus (Status status) {
         this.status = status;
     }
 
-    public void setRole(String role) {
+    public void setRole(Roles role) {
         this.role = role;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public static class Builder {
@@ -71,8 +82,8 @@ public class User {
         private String firstName;
         private String lastName;
         private int phone;
-        private String status;
-        private String role;
+        private Status status;
+        private Roles role;
 
         public Builder setUsername(String username) {
             this.username = username;
@@ -98,18 +109,18 @@ public class User {
             this.phone = phone;
             return this;
         }
-        public Builder setStatus(String status) {
+        public Builder setStatus(Status status) {
             this.status = status;
             return this;
         }
-        public Builder setRole(String role) {
+        public Builder setRole(Roles role) {
             this.role = role;
             return this;
         }
         public User build() {
             return new User(username, password, email, firstName, lastName, phone,
-                    status == null ? "ACTIVE" : status,
-                    role == null ? "USER" : role);
+                    status == null ? Status.ACTIVE : status,
+                    role == null ? Roles.USER : role);
         }
     }
 }
